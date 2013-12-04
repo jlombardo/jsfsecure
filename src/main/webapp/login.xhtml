@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html">
+    <h:head>
+        <title>Login Form</title>
+    </h:head>
+    <h:body style="background-color: yellow;">
+        <h3>Welcome to the Login Page</h3>
+        <p><h:link outcome="/index" value="To Home Page" /></p>
+
+        <!--
+            The significant thing to understand about this form is that it
+            uses a mixture of regular HTML tags and JSF tags. Let's start
+            by discussing the HTML form tag. Notice it has an action attribute
+            that points to "j_security_check". This is a built-in servlet that
+            is part of every Java Web Application server, but never seen. It
+            handles authentication and authorization. Next notice that all 
+            input is handled by regular HTML input tags ... not by JSF input tags.
+            The reason for this is that we are not sending data to a JSF
+            Managed Bean, but rather to the servlet discussed above. Finally,
+            notice that even the submit button is a plain HTML input tag
+            instead of a JSF commandButton. Again, this is because we are
+            submitting the form to the servlet, not to a JSF bean. And the
+            names of the input tags must be exactly as indicated. No custom
+            names allowed! Also, please not that these comments would normally
+            cause a JSF page to not display correctly. See the web.xml which
+            has an entry that allows this.
+        -->
+        <form method="POST" action="j_security_check">
+            <h:panelGrid columns="2">
+                <h:outputLabel value="User Name"/>
+                <input type="text" name="j_username" />
+                <h:outputLabel value="Password"/>
+                <input type="password" name="j_password" />
+                <input type="submit" value="Login" />
+            </h:panelGrid>
+        </form> 
+
+    </h:body>
+</html>
+

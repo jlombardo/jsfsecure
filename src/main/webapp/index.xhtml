@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html">
+    <h:head>
+        <title>Security with JSF Demo</title>
+    </h:head>
+    <h:body style="background-color: antiquewhite;">
+        <h3>About this JSF Web App With Security Demo</h3>
+        <p>Web security is a complex topic but the basics come down to:</p>
+        <ul>
+            <li><b>Authentication:</b> when you log in your credentials are
+                checked against a database for a match. If the match is found
+                you are allowed to proceed (you are authenticated); if not, access
+                is denied.</li>
+            <li><b>Authorization:</b> Once you are authenticated you must
+                be authorized to access certain content. For example a general
+                user may not be authorized to access areas of a web site that 
+                are designed for administrators only. Authorization is based on 
+                the idea that user accounts belong to one or more groups or 
+                roles. This membership results in authorization to view certain
+                parts of a web site.</li>
+            <li><b>Encryption:</b> As data moves from client to server and
+                back again, the data can be intercepted by a "sniffer" program -- 
+                a tool hackers use to steal passwords, credit card info and more.
+                Without encryption, which is not turned on by default, a web site
+                is vulnerable to this type of hacking because the data is flowing
+                as plain text. Encrypting this data flow is one way to thwart the
+                hackers' attempts at interception. A common tool for encryption is
+                SSL (Secure Socket Layer). We won't go into details here (you can
+                and should research this on your own) except to say that the steps
+                necessary for configuring security on your server will enable SSL.</li>
+            <li><b>Encryption in the Database:</b> It's not just the data
+                flowing from client to server that is at risk. Passwords and other 
+                sensitive data stored in databases are also at risk. Imagine, e.g.,
+                a disgruntled employee with server administration rights. This 
+                person could easily steal the sensitive data if it is not also
+                stored in encrypted form. We'll be using a "hashing" algorithm 
+                called "SHA-256" for this.</li>
+        </ul>
+        <h3>Let's Start the Demo. Select where you want to go:</h3>
+        <p>Note that in the address bar of your web browser the protocol will
+            change from "http:" to "https:" indicating that the data flow is 
+            being encrypted by SSL.</p>
+        <p><h:link outcome="admin/index" value="To the admin section" /></p>
+        <ul>
+            <li>Username, password: bob, password1</li>
+        </ul>
+        <p><h:link outcome="users/index" value="To the user section" /></p>
+        <ul>
+            <li>Username, password: sally, password2</li>
+            <li>Username, password: tom, password3</li>
+        </ul>
+
+        <h3>Logging Out of the Application</h3>
+        <p>A well designed web app must provide a convenient way for users to
+            log out, so that their account can not be used by someone else
+            with access to their computer.</p>
+        <h:form>
+            <h:commandLink action="#{logoutBean.logout}" value="Logout" />
+        </h:form>
+    </h:body>
+</html>
+

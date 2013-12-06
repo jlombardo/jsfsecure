@@ -1,7 +1,10 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    
     <h:head>
         <title>Login Form</title>
     </h:head>
@@ -9,33 +12,37 @@
         <h3>Welcome to the Login Page</h3>
         <p><h:link outcome="/index" value="To Home Page" /></p>
 
-        <!--
-            The significant thing to understand about this form is that it
-            uses a mixture of regular HTML tags and JSF tags. Let's start
-            by discussing the HTML form tag. Notice it has an action attribute
-            that points to "j_security_check". This is a built-in servlet that
-            is part of every Java Web Application server, but never seen. It
-            handles authentication and authorization. Next notice that all 
-            input is handled by regular HTML input tags ... not by JSF input tags.
-            The reason for this is that we are not sending data to a JSF
-            Managed Bean, but rather to the servlet discussed above. Finally,
-            notice that even the submit button is a plain HTML input tag
-            instead of a JSF commandButton. Again, this is because we are
-            submitting the form to the servlet, not to a JSF bean. And the
-            names of the input tags must be exactly as indicated. No custom
-            names allowed! Also, please not that these comments would normally
-            cause a JSF page to not display correctly. See the web.xml which
-            has an entry that allows this.
-        -->
-        <form method="POST" action="j_security_check">
-            <h:panelGrid columns="2">
-                <h:outputLabel value="User Name"/>
-                <input type="text" name="j_username" />
-                <h:outputLabel value="Password"/>
-                <input type="password" name="j_password" />
-                <input type="submit" value="Login" />
-            </h:panelGrid>
-        </form> 
+        <h:form id="loginForm" prependId="false" style="margin:90px 90px 90px 90px;">
+                        <p:growl id="growl" sticky="false" life="3000" showDetail="false" />
+                        <p:focus for="j_username"/>
+
+                        <p:panelGrid columns="1">
+                            <f:facet name="header">
+                                Do Authentication
+                            </f:facet>
+
+                            <p:watermark for="j_username" value="username@isp.com"/>                            
+                            <p:panelGrid columns="3">
+                                <h:outputLabel value="Email" for="j_username" />
+                                <p:inputText id="j_username" value="#{loginBean.userName}" 
+                                             required="true" label="Email" requiredMessage="Email is required"
+                                             validatorMessage="Please use a valid email address">
+                                    <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+                                </p:inputText>
+                                <p:message for="j_username"/>
+
+
+                                <h:outputLabel value="Password" for="j_password"/>
+                                <p:password id="j_password" value="#{loginBean.password}" feedback="false"
+                                            required="true" label="Password" requiredMessage="Password is required"
+                                            validatorMessage="Password must be at least 7 characters" />
+                                <p:message for="j_password"/>                                
+
+                                <h:outputText value=""/>
+                                <p:commandButton action="#{loginBean.doLogin()}" value="Login" ajax="false"/>
+                            </p:panelGrid>
+                        </p:panelGrid>
+                    </h:form>
 
     </h:body>
 </html>

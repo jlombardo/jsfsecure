@@ -1,7 +1,11 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/facelets/tags">
+    
     <h:head>
         <title>Admin Home Page</title>
     </h:head>
@@ -9,9 +13,14 @@
         <h3>Welcome to the Admin Home Page</h3>
         <p><h:link outcome="/index" value="To Home Page" /></p>
         <p>
-            <h:form>
-                <h:commandLink action="#{logoutBean.logout}" value="Logout" />
-            </h:form>
+            <h:link value="&lt;&lt; Back to Login Page" outcome="/login" />
+        </p>
+        <p>
+            <c:if test="#{sec:isAuthenticated()}">
+                <p>Logged in as: #{request.userPrincipal.name}<br/>
+                <a href="/jsfsecure/j_spring_security_logout">Just Log Me Out</a>
+                </p>
+            </c:if>
         </p>
     </h:body>
 </html>

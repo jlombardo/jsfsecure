@@ -15,7 +15,7 @@ public class ShaHashGeneratorApp {
      * @param args the command line arguments - not used.
      */
     public static void main(String[] args) {
-        String salt = "tom"; // username field in db
+        String salt = "tom@isp.com"; // username field in db
         String password = "password3"; // password field in db
         System.out.println(password + ": " + sha512(password,salt));
     }

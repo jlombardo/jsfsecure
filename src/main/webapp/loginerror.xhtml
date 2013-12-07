@@ -1,7 +1,11 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/facelets/tags">
+    
     <h:head>
         <title>Login Error </title>
     </h:head>
@@ -9,7 +13,17 @@
        <h3 style="color:red;font-weight: bold;">Sorry, Access Denied</h3>
        <p>Your credentials could not be verified or you are not authorized to 
            view the content you desire.</p>
-       <p><h:link outcome="/index" value="To Home Page" /></p>
+        <p><h:link outcome="/index" value="To Home Page" /></p>
+        <p>
+            <h:link value="&lt;&lt; Back to Login Page" outcome="/login" />
+        </p>
+        <p>
+            <c:if test="#{sec:isAuthenticated()}">
+                <p>Logged in as: #{request.userPrincipal.name}<br/>
+                <a href="/jsfsecure/j_spring_security_logout">Just Log Me Out</a>
+                </p>
+            </c:if>
+        </p>
     </h:body>
 </html>
 

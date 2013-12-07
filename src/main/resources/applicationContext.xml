@@ -85,8 +85,6 @@
     
     <!-- Server managed connection pool accessed via JNDI -->
     <jee:jndi-lookup id="dataSource" jndi-name="jdbc/securityDatasource"/>
-    
-    <bean name="perfLogInterceptor" class="edu.wctc.maven.glassfish.jsfsecure.util.PerformanceLoggingInterceptor"/>
         
     <!-- (Optional) Automatically receives and logs AuthenticationEvent messages -->
     <bean id="loggerListener" class="org.springframework.security.authentication.event.LoggerListener"/>

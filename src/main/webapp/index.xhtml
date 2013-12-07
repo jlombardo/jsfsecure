@@ -1,42 +1,77 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/facelets/tags">
     <h:head>
-        <title>Security with JSF Demo</title>
+        <title>Spring Security with JSF Demo</title>
     </h:head>
     <h:body style="background-color: antiquewhite;">
-        <h3>About this JSF Web App With Security Demo</h3>
-        <p>Web security is a complex topic but the basics come down to:</p>
+        <h3>About this JSF Web App With Spring Security Demo</h3>
+        <p>This is a special branch of the jsfsecure demo project that
+        demonstrates security the same way as previously shown, but this time
+        uses the Spring Framework to simplify and enhance security configuration
+        and the options you have for using it. In particular please take
+        note of these important differences compared to the original demo:</p>
         <ul>
-            <li><b>Authentication:</b> when you log in your credentials are
-                checked against a database for a match. If the match is found
-                you are allowed to proceed (you are authenticated); if not, access
-                is denied.</li>
-            <li><b>Authorization:</b> Once you are authenticated you must
-                be authorized to access certain content. For example a general
-                user may not be authorized to access areas of a web site that 
-                are designed for administrators only. Authorization is based on 
-                the idea that user accounts belong to one or more groups or 
-                roles. This membership results in authorization to view certain
-                parts of a web site.</li>
-            <li><b>Encryption:</b> As data moves from client to server and
-                back again, the data can be intercepted by a "sniffer" program -- 
-                a tool hackers use to steal passwords, credit card info and more.
-                Without encryption, which is not turned on by default, a web site
-                is vulnerable to this type of hacking because the data is flowing
-                as plain text. Encrypting this data flow is one way to thwart the
-                hackers' attempts at interception. A common tool for encryption is
-                SSL (Secure Socket Layer). We won't go into details here (you can
-                and should research this on your own) except to say that the steps
-                necessary for configuring security on your server will enable SSL.</li>
-            <li><b>Encryption in the Database:</b> It's not just the data
-                flowing from client to server that is at risk. Passwords and other 
-                sensitive data stored in databases are also at risk. Imagine, e.g.,
-                a disgruntled employee with server administration rights. This 
-                person could easily steal the sensitive data if it is not also
-                stored in encrypted form. We'll be using a "hashing" algorithm 
-                called "SHA-256" for this.</li>
+            <li><b>No Jdbc Realm is needed on the server:</b> Spring controls
+            everything so you don't need to configure the server in any way
+            other than to provide a connection pool and jdbc resource. And if
+            we wanted to, we coujld even do that in Spring. See the
+            "applicationContext.xml" file in Other Sources</li>
+            
+            <li><b>SHA-512 Plus Salt:</b> With the standard Glassfish Jdbc Realm 
+            configuration you could only choose between MD5 (very weak) and
+            SHA-256 (better, but not great). Now with Spring we can choose
+            SHA-512 (much stronger). Plus, before you couldn't add a salt to 
+            your password hash. Now you can with Spring. See the new 
+            ShaHashGeneratorApp.java and how we configure SHA-512 and the 
+            salt in applicationContext.xml</li>
+            
+            <li><b>Expansion:</b> When hashing passwords for database storage 
+            one must consider the advanced techniques that hackers use to 
+            break in to things using other people's stolen passwords. Just
+            using a hashed password, even with SHA-512, is not enough. A brute
+            force dictionary attack can solve that problem. And adding a 
+            salt value, which Spring can and does do, whereas Glassfish does
+            not, is better, but still not fool proof. An additional security
+            step is to use a technique called "expansion" which basically 
+            re-hashes the hash over and over again. In applicationContext.xml
+            you can see that we've used the "iteration" property of the 
+            encoder bean to do this. Again, no support is provided by Glassfish
+            so Spring comes to our rescue again!</li>
+            
+            <li><b>No security configuration needed in web.xml or glassfish-web.xml:</b> 
+            With Spring these tedious steps are not necessary. However, we
+            do need to configure Spring in web.xml. Also, for debugging purposes
+            we configured a LoginErrorPhaseListener in faces-config.xml.</li>
+            
+            <li><b>Your choice of destination from login page:</b> Using a
+            custom "LoginBean" we can now direct visitors to any page, even
+            the same page, after logging in.</li>
+            
+            <li><b>We've Switched to j_spring_security_check:</b> Just a small
+                change from j_security_check in previous demo</li>
+            
+            <li><b>New Spring Security Namespace for view: </b>Take a look at
+            pages like users/index.xhtml. What you will see is a new Spring
+            security namespace being used that lets is use JSTL to check and
+            see if a user is still logged in. We also show you how to get 
+            the user's loggin name.</li>
+            <li><b>Misc. Utilities: </b>Unrelated to security we've added some
+                additional utilities to help you. Look at "FacesUtils.java" 
+                and "RegexpUtils.java"</li>
+            <li><b>Logging support with Logback:</b> Lastly we've added a
+                state-of-the-art logging utility by Logback. See sample
+                bean classes for examples of use, but basically this replaces
+                System.out.println() statements and lets you direct output
+                to multiple locations, with advanced features like creating
+                log files, zipped log files and rotating log files. See
+                the file logback.xml and the dependency added to the pom.xml.
+                Then research the tool on your own.
+            </li>
         </ul>
         <h3>Let's Start the Demo. Select where you want to go:</h3>
         <p>Note that in the address bar of your web browser the protocol will
@@ -56,9 +91,13 @@
         <p>A well designed web app must provide a convenient way for users to
             log out, so that their account can not be used by someone else
             with access to their computer.</p>
-        <h:form>
-            <h:commandLink action="#{logoutBean.logout}" value="Logout" />
-        </h:form>
+        <p>
+            <c:if test="#{sec:isAuthenticated()}">
+                <p>Logged in as: #{request.userPrincipal.name}<br/>
+                <a href="/jsfsecure/j_spring_security_logout">Just Log Me Out</a>
+                </p>
+            </c:if>
+        </p>        
     </h:body>
 </html>
 

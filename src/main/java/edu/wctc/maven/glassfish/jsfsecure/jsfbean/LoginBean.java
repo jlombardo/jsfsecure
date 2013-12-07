@@ -44,13 +44,15 @@ public class LoginBean implements Serializable {
      * @throws ServletException
      */
     public String doLogin() throws IOException, ServletException {
-        String destinationPage = "/faces/login.xhtml";
-        
+        LOG.debug("**** Executing doLogin method of LoginBean...");
         ExternalContext context = FacesContext.getCurrentInstance()
                 .getExternalContext();
+        
         RequestDispatcher dispatcher = ((ServletRequest) context.getRequest())
                 .getRequestDispatcher("/j_spring_security_check?j_username=" + userName
                                 + "&j_password=" + password);
+        
+        // Forwards to original destination or to error page
         dispatcher.forward((ServletRequest) context.getRequest(),
                 (ServletResponse) context.getResponse());
         FacesContext.getCurrentInstance().responseComplete();

@@ -72,6 +72,18 @@
                 the file logback.xml and the dependency added to the pom.xml.
                 Then research the tool on your own.
             </li>
+            <li><b>Database Changes:</b> You will need to drop and re-create
+                your jdbcrealm database. Spring uses different tables and
+                fields. The users table now has an "enabled" column that
+                Spring requires. This also let's you disable an account by
+                setting the value to 0 (zero). Spring also needs an 
+                "authorities" table instead of a group table. And the
+                authorities have new names -- ROLE_ADMIN an ROLE_USER. You
+                can create any role you want using the syntax "ROLE_XXXX".
+                Be sure to modify the associated applicationContext.xml and
+                related files. And don't forget to create your hashed 
+                passwords and replace the plain text versions in the users
+                table</li>
         </ul>
         <h3>Let's Start the Demo. Select where you want to go:</h3>
         <p>Note that in the address bar of your web browser the protocol will

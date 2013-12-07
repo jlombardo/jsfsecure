@@ -1,20 +1,24 @@
 CREATE DATABASE jdbcrealm;
 USE jdbcrealm;
-CREATE TABLE `jdbcrealm`.`users` (
-`username` varchar(255) NOT NULL,
-`password` varchar(255) DEFAULT NULL,
-PRIMARY KEY (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `users` (
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `enabled` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8$$
 
-CREATE TABLE `jdbcrealm`.`groups` (
-`username` varchar(255) DEFAULT NULL,
-`groupname` varchar(255) DEFAULT NULL)
-ENGINE=InnoDB DEFAULT CHARSET=utf8;
-CREATE INDEX groups_users_FK1 ON groups(username ASC);
+CREATE TABLE `authorities` (
+  `username` varchar(50) NOT NULL,
+  `authority` varchar(50) NOT NULL DEFAULT 'ROLE_MEMBER',
+  `authorities_id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`authorities_id`),
+  UNIQUE KEY `ix_auth_username` (`username`,`authority`),
+  CONSTRAINT `fk_authorities_users` FOREIGN KEY (`username`) REFERENCES `users` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8$$
 
-INSERT INTO users VALUES('bob','password1');
-INSERT INTO users VALUES('sally','password2');
-INSERT INTO users VALUES('tom','password3');
-INSERT INTO groups VALUES('bob','admin');
-INSERT INTO groups VALUES('sally','user');
-INSERT INTO groups VALUES('tom','user');
+INSERT INTO users VALUES('bob@isp.com','password1',1);
+INSERT INTO users VALUES('sally@isp.com','password2',1);
+INSERT INTO users VALUES('tom@isp.com','password3',1);
+INSERT INTO authorities VALUES('bob@isp.com','ROLE_ADMIN');
+INSERT INTO authorities VALUES('sally@isp.com','ROLE_USER');
+INSERT INTO authorities VALUES('tom@isp.com','ROLE_USER');

@@ -84,7 +84,7 @@
     
     
     <!-- Server managed connection pool accessed via JNDI -->
-    <jee:jndi-lookup id="dataSource" jndi-name="jdbc/securityDatasource"/>
+    <jee:jndi-lookup id="dataSource" jndi-name="jdbc/springSecurityDatasource"/>
         
     <!-- (Optional) Automatically receives and logs AuthenticationEvent messages -->
     <bean id="loggerListener" class="org.springframework.security.authentication.event.LoggerListener"/>

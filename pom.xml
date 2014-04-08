@@ -12,10 +12,9 @@
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <org.springframework.version>3.2.4.RELEASE</org.springframework.version>
-        <spring-security.version>3.1.4.RELEASE</spring-security.version>
+        <org.springframework.version>4.0.3.RELEASE</org.springframework.version>
+        <spring-security.version>3.2.3.RELEASE</spring-security.version>
         <junit.version>4.11</junit.version>
-        <slf4j.version>1.6.6</slf4j.version>
         <aspectj.version>1.7.1</aspectj.version>
     </properties>
     
@@ -43,7 +42,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>13.0.1</version>
+            <version>16.0.1</version>
         </dependency>
                 
         <!-- Primefaces JSF Components -->

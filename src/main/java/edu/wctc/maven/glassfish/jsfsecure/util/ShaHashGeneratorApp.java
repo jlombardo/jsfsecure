@@ -18,6 +18,14 @@ public class ShaHashGeneratorApp {
         String salt = "bob@isp.com"; // username field in db
         String password = "password1"; // password field in db
         System.out.println(password + ": " + sha512(password,salt));
+        
+        salt = "sally@isp.com"; // username field in db
+        password = "password2"; // password field in db
+        System.out.println(password + ": " + sha512(password,salt));
+        
+        salt = "tom@isp.com"; // username field in db
+        password = "password3"; // password field in db
+        System.out.println(password + ": " + sha512(password,salt));
     }
 
     public static String sha512(String pwd, String salt) {

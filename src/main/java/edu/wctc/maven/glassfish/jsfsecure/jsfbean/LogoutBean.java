@@ -2,11 +2,12 @@ package edu.wctc.maven.glassfish.jsfsecure.jsfbean;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * This JSF/CDI Managed Bean provides a way for users to log out of the
@@ -33,6 +34,11 @@ public class LogoutBean {
                 (HttpServletRequest) context.getExternalContext().getRequest();
 
         try {
+            // added May 12, 2014
+            HttpSession session = request.getSession();
+            session.invalidate();
+            
+            // this does not invalidate the session but does null out the user Principle
             request.logout();
         } catch (ServletException e) {
             log.log(Level.SEVERE, "Failed to logout user!", e);
